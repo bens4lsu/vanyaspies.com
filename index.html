@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Vanya's Pies</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,700|Anton" rel="stylesheet">
+    
+
+    <link rel="stylesheet" href="fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/magnific-popup.css">
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+    <link rel="stylesheet" href="css/owl.theme.default.min.css">
+
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+
+    <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
+
+    <link rel="stylesheet" href="css/aos.css">
+
+    <link rel="stylesheet" href="css/style.css">
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="   crossorigin="anonymous"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/jquery.waypoints.min.js"></script>
+    <script src="js/jquery.animateNumber.min.js"></script>
+    <script src="js/aos.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lc46MYUAAAAAIzCO0l0Eyxfhb8Gs3TAcwIyJVo-"></script>
+    
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  
+    <script>
+    
+        function isEmail(email) {
+          var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          return regex.test(email);
+        }
+        
+        function isPhoneNumber(phone) {
+            var regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+            return regex.test(phone);
+        }
+        
+        function isDateMMDDYYYY(date) {
+            var regex = /^(0[1-9]|[12][0-9]|3[01])[- \/.]/;
+            return regex.test(date);
+        }
+        
+        function isAllDigits(num) {
+            var regex = /^0*[1-9]+[0-9]*$/;
+            return regex.test(num);
+        }
+
+        function validateFormInputs() {
+            $('#btnPlaceOrder').attr("disabled", false);
+            $('#fname').css('border-color', '#ced4da');
+            $('#lname').css('border-color', '#ced4da');
+            $('#email').css('border-color', '#ced4da');
+            $('#phone').css('border-color', '#ced4da');
+            $('#datepicker-1').css('border-color', '#ced4da');
+            $('#qty').css('border-color', '#ced4da');
+            $('#selProd').css('border-color', '#ced4da');
+            $('#pickup-select-opt').css('border-color', '#ced4da');
+            
+            
+            if ($('#fname').val().trim().length == 0) {
+                $('#fname').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if ($('#lname').val().trim().length == 0) {
+                $('#lname').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if (! isEmail($('#email').val().trim())) {
+                $('#email').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if (! isPhoneNumber($('#phone').val().trim())) {
+                $('#phone').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if (! isDateMMDDYYYY($('#datepicker-1').val().trim()) && $('#pickup-select-opt').val() == "" ) {
+                $('#datepicker-1').css('border-color', '#fd5f00');
+                $('#pickup-select-opt').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if (! isAllDigits($('#qty').val())) {
+                $('#qty').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            if ($('#selProd').val() == "") {
+                $('#selProd').css('border-color', '#fd5f00');
+                $('#btnPlaceOrder').attr("disabled", true);
+            }
+            
+
+        }
+  
+        $(document).ready(function() {
+        
+            var tempPlaceholder;
+            
+            $('#datepicker-1').datepicker({
+                minDate: new Date(),
+                maxDate: new Date(2020, 12 - 1, 31)
+            });
+            
+            $('input').focus(function() {
+                tempPlaceholder = $(this).attr("placeholder");
+            });
+            
+            $('input').blur(function() {
+                $(this).attr("placeholder", tempPlaceholder);
+                if ($(this)[0] == $('#datepicker-1')[0]) {
+                    $('#datepicker-1').attr("placeholder", "Desired Pickup Date");
+                }
+                else if ($(this)[0] == $('#phone')[0] && $(this).val().length == 10) {
+                    var ac = $(this).val().substr(0,3);
+                    var pre = $(this).val().substr(3,3);
+                    var final4 = $(this).val().substr(6,4);
+                    $(this).val('(' + ac + ') ' + pre + '-' + final4);
+                }
+            });
+            
+            $('input, select').bind('keyup change', function() {
+                validateFormInputs();
+            });
+            
+            $('#email').blur(function() {
+                grecaptcha.execute('6Lc46MYUAAAAAIzCO0l0Eyxfhb8Gs3TAcwIyJVo-', {action: 'homepage'}).then(function(token) {
+                   $('.recaptcha-token').val(token);
+                });
+            });
+            
+            $('#selProd').bind('keyup change', function() {
+                if ($('#selProd').val() == "peydon") {
+                    $('#pickup-select-opt').css('display', 'inline-block');
+                    $('#datepicker-1').css('display', 'none');
+                }
+                else {
+                    $('#datepicker-1').css('display', 'inline-block');
+                    $('#pickup-select-opt').css('display', 'none');
+                }
+            });
+            
+            
+            validateFormInputs();
+        });
+  
+    </script>
+  
+  <div class="site-wrap"  id="home-section">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+      
+    <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center position-relative">
+          
+            
+            <div class="site-logo">
+              <a href="index.html" class="text-black"><span class="text-primary">Vanya's Pies</a>
+            </div>
+            
+              <nav class="site-navigation text-center ml-auto" role="navigation">
+
+                <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
+                  <li><a href="#home-section" class="nav-link">Home</a></li>
+                  <li><a href="#contact-section" class="nav-link">Place an Order</a></li>
+                  <li><a href="https://facebook.com/vanyaspies"><img src="images/fb.png" alt="facebook"></a></li>
+                  <li><a href="https://www.instagram.com/vanyaspies/"><img src="images/insta.png" alt="instagram"></a></li>
+                  <!--<li><a href="#about-section" class="nav-link">About</a></li>
+                  <li><a href="#discover-section" class="nav-link">Discover</a></li>
+                  <li><a href="#donate-section" class="nav-link">Donate</a></li>
+                  <li><a href="#blog-section" class="nav-link">Blog</a></li>-->
+                  
+                </ul>
+              </nav>
+          
+            
+
+          <div class="toggle-button d-inline-block d-lg-none"><a href="#" class="site-menu-toggle py-5 js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+    
+    <div class="owl-carousel slide-one-item">
+      <a href="#"><img src="images/pies.jpg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies01.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies02.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies03.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies04.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies05.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/pies06.jpeg" alt="Image" class="img-fluid"></a>
+      <a href="#"><img src="images/bestfood.jpg" alt="Image" class="img-fluid"></a>
+      
+    </div>
+    
+    <div class="d-block d-md-flex intro-engage">
+      <div class="">
+        <h2>about vanya </h2>
+        <p>I’m 13, living in Baton Rouge.  I like legos, baking, restaurants, drums, bikes, boats, dogs, and cats.</p>
+      </div>
+      <div>
+        <h2>Vanya's Pies</h2>
+        <p>I work hard to make good meat pies.  I grew up eating the famous meat pies from Natchitoches, Louisiana. I use fresh meat from my grandparents’ farm. I get hatch peppers from New Mexico. I have perfected flaky golden crust. </p>
+      </div>
+      <div>
+        <!--<h2>Free Education</h2>
+        <p>Accusantium dignissimos voluptas rem consequatur blanditiis error ratione illo sit quasi ut praesentium magnam</p>-->
+        <img src="images/logo.png">
+      </div>
+    </div>
+
+    <div class="site-section bg-image overlay counter" style="background-image: url('images/hero_1_no-text.jpg');" id="about-section">
+      <div class="container">
+        <!--<div class="row mb-5">
+          <div class="col-lg-6 mb-4">
+            <figure class="block-img-video-1" data-aos="fade">
+              <a href="https://vimeo.com/45830194" class="popup-vimeo">
+                <span class="icon"><span class="icon-play"></span></span>
+                <img src="images/hero_1_no-text.jpg" alt="Image" class="img-fluid">
+              </a>
+            </figure>
+          </div>
+          <div class="col-lg-5 ml-auto align-self-lg-center">
+            <h2 class="text-black mb-4 text-uppercase section-title">Our Mission</h2>
+            <p class="text-black">Accusantium dignissimos voluptas rem consequatur blanditiis error ratione illo sit quasi ut, praesentium magnam, pariatur quae, necessitatibus</p>
+            <p class="text-black">Dolor, eligendi voluptate ducimus itaque esse autem perspiciatis sint! Recusandae dolor aliquid inventore sit,</p>
+          </div>
+        </div>-->
+        <div class="row">
+          <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
+            <div class="block-counter-1">
+              <span class="number"><span data-number="250">0</span></span>
+              <span class="caption text-black">Number of Traditional Pies Delivered</span>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
+            <div class="block-counter-1">
+              <span class="number"><span data-number="750">0</span></span>
+              <span class="caption text-black">Number of Mini Pies Delivered</span>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
+            <div class="block-counter-1">
+              <span class="number"><span data-number="3">0</span></span>
+              <span class="caption text-black">Number of Volunteers</span>
+            </div>
+          </div>
+          <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
+            <div class="block-counter-1">
+              <span class="number"><span data-number="50">0</span></span>
+              <span class="caption text-black">Number of Customers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="site-section bg-light counter" id="discover-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <div class="block-heading-1">
+              <h2 class="text-black text-uppercase">Discover</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto aperiam unde natus voluptates placeat accusamus vel laborum cupiditate. Reiciendis commodi perferendis dignissimos, amet quis.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-5">
+
+          <div class="col-lg-6 mb-5">
+            <img src="images/hero_1_no-text.jpg" alt="Image" class="img-fluid">
+          </div>
+          <div class="col-lg-5 ml-auto align-self-center">
+            <h3 class="text-black text-uppercase mb-4">Build Schools in Africa</h3>
+            <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam quis, nemo explicabo cupiditate vero fugiat sit eius sequi.</p>
+
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="block-counter-1 block-counter-1-sm">
+                  <span class="number"><span data-number="15">0</span></span>
+                  <span class="caption text-black">Schools</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="block-counter-1 block-counter-1-sm">
+                  <span class="number"><span data-number="1039">0</span></span>
+                  <span class="caption text-black">Students</span>
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+
+          
+          
+        </div>
+
+        <div class="row mb-5">
+
+          <div class="col-lg-6 mb-5 order-lg-2">
+            <img src="images/hero_2_no-text.jpg" alt="Image" class="img-fluid">
+          </div>
+          <div class="col-lg-5 mr-auto align-self-center order-lg-1">
+            <h3 class="text-black text-uppercase mb-4">Feeding Children in Africa</h3>
+            <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam quis, nemo explicabo cupiditate vero fugiat sit eius sequi.</p>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="block-counter-1 block-counter-1-sm">
+                  <span class="number"><span data-number="3298">0</span></span>
+                  <span class="caption text-black">Children</span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="block-counter-1 block-counter-1-sm">
+                  <span class="number"><span data-number="38">0</span></span>
+                  <span class="caption text-black">Orphanage</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="site-section bg-image overlay" style="background-image: url('images/hero_1_no-text.jpg');" id="donate-section">
+      <div class="container">
+        <div class="row align-items-center justify-content-center">
+          <div class="col-lg-5 text-center">
+            <h2 class="text-white mb-4">Make A Donation Now! You May Change Lives Forever</h2>
+            <p><a href="#" class="btn btn-primary px-4 py-3 btn-block">Donate Now</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="site-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-piggy-bank d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Make Donation</h3>
+            <p>Accusantium dignissimos voluptas rem consequatur ratione illo sit quasi.</p>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-blood d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Medical Health</h3>
+            <p>Praesentium magnam pariatur quae necessitatibus eligendi voluptate ducimus.</p>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-food d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Food for the Poor</h3>
+            <p>Accusantium dignissimos voluptas rem consequatur ratione illo sit quasi.</p>
+          </div>
+
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-donation d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Help &amp; Love</h3>
+            <p>Accusantium dignissimos voluptas rem consequatur ratione illo sit quasi.</p>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-dollar d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Give To The Needy</h3>
+            <p>Praesentium magnam pariatur quae necessitatibus eligendi voluptate ducimus.</p>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4 text-center">
+            <span class="flaticon-unity d-block mb-3 display-3 text-secondary"></span>
+            <h3 class="text-primary h4 mb-2">Volunteer</h3>
+            <p>Accusantium dignissimos voluptas rem consequatur ratione illo sit quasi.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
+    <div class="site-section" id="team-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+              <h2 class="text-black text-uppercase section-title">Our Leadership</h2>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut corporis, eius, eos consectetur consequuntur sit. Aut, perspiciatis, reprehenderit.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0" data-aos="fade-up">
+            <div class="block-team-member-1 text-center rounded">
+              <figure>
+                <img src="images/person_1.jpg" alt="Image" class="img-fluid rounded-circle">
+              </figure>
+              <h3 class="font-size-20 text-white">Jean Smith</h3>
+              <span class="d-block font-gray-5 letter-spacing-1 text-uppercase font-size-12 mb-3">Mining Expert</span>
+              <p class="px-3 mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, repellat. At, soluta. Repellendus vero, consequuntur!</p>
+              <div class="block-social-1">
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-facebook"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-twitter"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-instagram"></span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+            <div class="block-team-member-1 text-center rounded">
+              <figure>
+                <img src="images/person_2.jpg" alt="Image" class="img-fluid rounded-circle">
+              </figure>
+              <h3 class="font-size-20 text-white">Bob Carry</h3>
+              <span class="d-block font-gray-5 letter-spacing-1 text-uppercase font-size-12 mb-3">Project Manager</span>
+              <p class="px-3 mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil quia veritatis, nam quam obcaecati fuga.</p>
+              <div class="block-social-1">
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-facebook"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-twitter"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-instagram"></span></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6 mb-4 mb-lg-0" data-aos="fade-up" data-aos-delay="200">
+            <div class="block-team-member-1 text-center rounded">
+              <figure>
+                <img src="images/person_3.jpg" alt="Image" class="img-fluid rounded-circle">
+              </figure>
+              <h3 class="font-size-20 text-white">Ricky Fisher</h3>
+              <span class="d-block font-gray-5 letter-spacing-1 text-uppercase font-size-12 mb-3">Engineer</span>
+              <p class="px-3 mb-3">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas quidem, laudantium, illum minus numquam voluptas?</p>
+              <div class="block-social-1">
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-facebook"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-twitter"></span></a>
+                <a href="#" class="btn border-w-2 rounded primary-primary-outline--hover"><span class="icon-instagram"></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>-->
+
+    
+    
+    <!--<div class="site-section block-13 overlay bg-image" id="testimonials-section" data-aos="fade" style="background-image: url('images/hero_1_no-text.jpg');">
+      <div class="container">
+        
+        <div class="text-center mb-5">
+          <h2 class="text-white text-uppercase section-title">Testimonial</h2>
+        </div>
+
+        <div class="owl-carousel nonloop-block-13">
+          <div>
+            <div class="block-testimony-1 text-center">
+              
+              <blockquote class="mb-4">
+                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, fugit excepturi sapiente voluptatum nulla odio quaerat quibusdam tempore similique doloremque veritatis et cupiditate, maiores cumque repudiandae explicabo tempora deserunt consequuntur?&rdquo;</p>
+              </blockquote>
+
+              <figure>
+                <img src="images/person_4.jpg" alt="Image" class="img-fluid rounded-circle mx-auto">
+              </figure>
+              <h3 class="font-size-20 text-white">Ricky Fisher</h3>
+            </div>
+          </div>
+
+          <div>
+            <div class="block-testimony-1 text-center">
+              <blockquote class="mb-4">
+                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, fugit excepturi sapiente voluptatum nulla odio quaerat quibusdam tempore similique doloremque veritatis et cupiditate, maiores cumque repudiandae explicabo tempora deserunt consequuntur?&rdquo;</p>
+              </blockquote>
+
+              <figure>
+                <img src="images/person_2.jpg" alt="Image" class="img-fluid rounded-circle mx-auto">
+              </figure>
+              <h3 class="font-size-20 text-white">Ken Davis</h3>
+            </div>
+          </div>
+
+          <div>
+            <div class="block-testimony-1 text-center">
+              <blockquote class="mb-4">
+                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, fugit excepturi sapiente voluptatum nulla odio quaerat quibusdam tempore similique doloremque veritatis et cupiditate, maiores cumque repudiandae explicabo tempora deserunt consequuntur?&rdquo;</p>
+              </blockquote>
+
+              <figure>
+                <img src="images/person_1.jpg" alt="Image" class="img-fluid rounded-circle mx-auto">
+              </figure>
+              <h3 class="font-size-20 text-white">Mellisa Griffin</h3>
+            </div>
+          </div>
+
+          <div>
+            <div class="block-testimony-1 text-center">
+              <blockquote class="mb-4">
+                <p>&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem, fugit excepturi sapiente voluptatum nulla odio quaerat quibusdam tempore similique doloremque veritatis et cupiditate, maiores cumque repudiandae explicabo tempora deserunt consequuntur?&rdquo;</p>
+              </blockquote>
+
+              <figure>
+                <img src="images/person_3.jpg" alt="Image" class="img-fluid rounded-circle mx-auto">
+              </figure>
+              <h3 class="font-size-20 text-white">Robert Steward</h3>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>-->
+
+    
+
+
+    <!--<div class="site-section" id="blog-section">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-7 text-center mb-5 text-center">
+            <h2 class="text-black text-uppercase section-title">Our Blog</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Obcaecati ab possimus fugiat, autem aliquid, commodi quod voluptatum consectetur.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div>
+              <a href="single.html" class="mb-4 d-block"><img src="images/hero_1_no-text.jpg" alt="Image" class="img-fluid rounded"></a>
+              <h2><a href="single.html">How to Invest In Investing Company</a></h2>
+              <p class="text-muted mb-3 text-uppercase small"><span class="mr-2">January 18, 2019</span> By <a href="single.html" class="by">James Cooper</a></p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat et suscipit iste libero neque. Vitae quidem ducimus voluptatibus nemo cum odio ab enim nisi, itaque, libero fuga veritatis culpa quis!</p>
+              <p><a href="single.html">Get Started</a></p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div>
+              <a href="single.html" class="mb-4 d-block"><img src="images/hero_2_no-text.jpg" alt="Image" class="img-fluid rounded"></a>
+              <h2><a href="single.html">How to Invest In Investing Company</a></h2>
+              <p class="text-muted mb-3 text-uppercase small"><span class="mr-2">January 18, 2019</span> By <a href="single.html" class="by">James Cooper</a></p>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat et suscipit iste libero neque. Vitae quidem ducimus voluptatibus nemo cum odio ab enim nisi, itaque, libero fuga veritatis culpa quis!</p>
+              <p><a href="single.html">Read More</a></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>-->
+
+
+    <div class="site-section bg-light" id="contact-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center mb-5">
+            <h2 class="text-black section-title text-uppercase">Place an Order</h2>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-lg-6 mb-5">
+              <div class="order-info">
+                  
+                  <!-- <h4>SPRING SPECIAL</h4><h4>&nbsp;</h4>
+                  <h4>Now featuring Strawberry Pies made with fresh Lousiana strawberries and creole cream cheese.  $20/dozen.  Mid-sized pies.</h4> -->
+                  
+                  <p class="highlighted">Payment by cash when you pick up<br>or by Venmo @vanya-schultz</p>
+            <form action="process-form.php" method="post" >
+              <div class="form-group row">
+                <div class="col-md-6 mb-4 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="First name" name="fname" id="fname">
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" placeholder="Last name" name="lname" id="lname">
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-md-12">
+                    <input type="email" class="form-control" placeholder="Email address" name="email" id="email">
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-12">
+                    <input type="tel" class="form-control" placeholder="Phone number" name="phone" id="phone">
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <div class="col-md-4">
+                  <select class="form-control" name="bagSize" id="selProd">
+                    <option value="" selected></option>
+                    <optgroup label="Meat Pies">
+                        <option value="dozen">Dozen Full Size($45)</option>
+                        <option value="half-dozen">Half-dozen Full size($25)</option>
+                        <option value="dozen-mid-sized">Dozen Mid-Size($25)</option>
+                    </optgroup>
+                    <!--<optgroup label="Other Pies">
+                        <option value="dozen-strawberry">Dozen Mid-Size Strawberry($20)</option>
+                    </optgroup>-->
+                  </select>
+                </div>
+                
+                <div class="col-md-4">
+                  <input type="number" class="form-control" placeholder="Quantity" name="qty" id="qty">
+                </div>
+                
+                <div class="col-md-4 mb-4 mb-lg-0">
+                  <input type="text" class="form-control" placeholder="Desired Pickup Date" name="date" id="datepicker-1">
+                  
+                  <select class="form-control" name="pickup-select-opt" id="pickup-select-opt" style="display:none;">
+                      <option value="" selected></option>
+                      <option value="9-25 from 12 to 2">9/25 Lunch (12:00 - 2:00)</option>
+                      <option value="9-25 from 5 to 7">9/25 Dinner (5:00 - 7:00)</option>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group row">
+                <div class="col-md-12">
+                  <textarea name="message" id="" class="form-control" placeholder="Write your message." cols="30" rows="10"></textarea>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-md-6 ml-auto">
+                  <input type="submit" class="btn btn-block btn-primary text-white py-3 px-5" value="Place Order" id="btnPlaceOrder">
+                </div>
+              </div>
+              <input type="hidden" name="recaptcha-token" class="recaptcha-token">
+            </form>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          
+          <!--<div class="col-md-6">
+            <div class="row">
+              <div class="col-md-8">
+                <h2 class="footer-heading mb-4">About Us</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque facere laudantium magnam voluptatum autem. Amet aliquid nesciunt veritatis aliquam.</p>
+              </div>
+              <div class="col-md-4 ml-auto">
+                <h2 class="footer-heading mb-4">Features</h2>
+                <ul class="list-unstyled">
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Testimonials</a></li>
+                  <li><a href="#">Terms of Service</a></li>
+                  <li><a href="#">Privacy</a></li>
+                  <li><a href="#">Place An Order</a></li>
+                </ul>
+              </div>
+              
+            </div>
+          </div>
+          <div class="col-md-4 ml-auto">
+
+            <div class="mb-5">
+              <div class="mb-5">
+                <h2 class="footer-heading mb-4">Some Paragraph</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat nostrum libero iusto dolorum vero atque aliquid.</p>
+              </div>
+              <h2 class="footer-heading mb-4">Subscribe to Newsletter</h2>
+              <form action="#" method="post">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control border-secondary text-white bg-transparent" placeholder="Enter Email" aria-label="Enter Email" aria-describedby="button-addon2">
+                  <div class="input-group-append">
+                    <button class="btn btn-primary text-white" type="button" id="button-addon2">Subscribe</button>
+                  </div>
+                </div>
+              </div>
+
+
+              <h2 class="footer-heading mb-4">Follow Us</h2>
+                <a href="#about-section" class="smoothscroll pl-0 pr-3"><span class="icon-facebook"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+            </form>
+          </div>
+        </div>-->
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+            <p>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            Copyright &copy;<script>document.write(new Date().getFullYear());</script> 
+            </p>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+
+  </div>
+        <script src="js/main.js"></script>
+        
+
+
+  </body>
+</html>
