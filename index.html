@@ -102,9 +102,15 @@
                 $('#selProd').css('border-color', '#fd5f00');
                 $('#btnPlaceOrder').attr("disabled", true);
             }
-            
-
         }
+        
+        
+        Date.prototype.addDays = function(days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
   
         $(document).ready(function() {
         
@@ -112,7 +118,7 @@
             
             $('#datepicker-1').datepicker({
                 minDate: new Date(),
-                maxDate: new Date(2020, 12 - 1, 31)
+                maxDate: (new Date()).addDays(42)
             });
             
             $('input').focus(function() {
@@ -220,11 +226,11 @@
     <div class="d-block d-md-flex intro-engage">
       <div class="">
         <h2>about vanya </h2>
-        <p>I’m 13, living in Baton Rouge.  I like legos, baking, restaurants, drums, bikes, boats, dogs, and cats.</p>
+        <p>I’m 15, living in Baton Rouge.  I like legos, baking, restaurants, drums, bikes, boats, dogs, and cats.</p>
       </div>
       <div>
         <h2>Vanya's Pies</h2>
-        <p>I work hard to make good meat pies.  I grew up eating the famous meat pies from Natchitoches, Louisiana. I use fresh meat from my grandparents’ farm. I get hatch peppers from New Mexico. I have perfected flaky golden crust. </p>
+        <p>I work hard to make good meat pies.  I grew up eating the famous meat pies from Natchitoches, Louisiana. I use fresh meat from my grandparents’ farm. I get hatch peppers from New Mexico. I have perfected flaky golden crust. I have been making and selling pies for two years now!</p>
       </div>
       <div>
         <!--<h2>Free Education</h2>
@@ -253,13 +259,13 @@
         <div class="row">
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
             <div class="block-counter-1">
-              <span class="number"><span data-number="250">0</span></span>
+              <span class="number"><span data-number="320">0</span></span>
               <span class="caption text-black">Number of Traditional Pies Delivered</span>
             </div>
           </div>
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
             <div class="block-counter-1">
-              <span class="number"><span data-number="750">0</span></span>
+              <span class="number"><span data-number="1548">0</span></span>
               <span class="caption text-black">Number of Mini Pies Delivered</span>
             </div>
           </div>
@@ -271,7 +277,7 @@
           </div>
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
             <div class="block-counter-1">
-              <span class="number"><span data-number="50">0</span></span>
+              <span class="number"><span data-number="51">0</span></span>
               <span class="caption text-black">Number of Customers</span>
             </div>
           </div>
