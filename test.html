@@ -26,7 +26,7 @@
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"   integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="   crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"   integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="   crossorigin="anonymous"></script>
-    <script src="js/popper.min.js"></script>
+    <!--<script src="js/popper.min.js"></script>-->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/jquery.magnific-popup.min.js"></script>
@@ -161,6 +161,34 @@
             
             
             validateFormInputs();
+
+
+            // load site settings
+            $.getJSON( "settings.json", function( data ) { 
+                console.log(data);
+                // product select box
+                $.each(data.productCategories, function(i, productCategory) {
+                    if (productCategory.active) {
+                        var appendCode = '<optgroup label="' + productCategory.categoryName + '">';
+                        $.each(productCategory.products, function(j, product) {
+                            if (product.active) {
+                                appendCode = appendCode + '<option value="' + product.id + '">' + product.productName + '</option>';
+                            }
+                        });
+                        appendCode = appendCode + '</optgroup>';
+                        $("#selProd").append(appendCode);
+                    }
+                });
+                
+                // statistics
+                $.each(data.statistics, function(i, statistic) {
+                    var statId = "#stat" + i;
+                    console.log($(statId + " > span.caption"));
+                    $(statId + " > span.number > span").attr("data-number", statistic.value);
+                    $(statId + " > span.caption").text(statistic.description);
+                });
+                
+            });
         });
   
     </script>
@@ -258,25 +286,25 @@
         </div>-->
         <div class="row">
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
-            <div class="block-counter-1">
+            <div class="block-counter-1" id="stat0">
               <span class="number"><span data-number="320">0</span></span>
               <span class="caption text-black">Number of Traditional Pies Delivered</span>
             </div>
           </div>
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
-            <div class="block-counter-1">
+            <div class="block-counter-1" id="stat1">
               <span class="number"><span data-number="1548">0</span></span>
               <span class="caption text-black">Number of Mini Pies Delivered</span>
             </div>
           </div>
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
-            <div class="block-counter-1">
+            <div class="block-counter-1" id="stat2">
               <span class="number"><span data-number="3">0</span></span>
               <span class="caption text-black">Number of Volunteers</span>
             </div>
           </div>
           <div class="col-md-6 mb-4 col-lg-0 col-lg-3">
-            <div class="block-counter-1">
+            <div class="block-counter-1" id="stat3">
               <span class="number"><span data-number="51">0</span></span>
               <span class="caption text-black">Number of Customers</span>
             </div>
@@ -614,17 +642,6 @@
                 <div class="col-md-4">
                   <select class="form-control" name="bagSize" id="selProd">
                     <option value="" selected></option>
-                    <optgroup label="Desert Pies">
-                        <option value="keylime">Key Lime ($15/dozen)</option>
-                    </optgroup>
-                    <optgroup label="Meat Pies">
-                        <!--<option value="dozen">Dozen Full Size($45)</option>-->
-                        <option value="half-dozen">Half-dozen Full size($25)</option>
-                        <option value="dozen-mid-sized">Dozen Mid-Size($25)</option>
-                    </optgroup>
-                    <!--<optgroup label="Other Pies">
-                        <option value="dozen-strawberry">Dozen Mid-Size Strawberry($20)</option>
-                    </optgroup>-->
                   </select>
                 </div>
                 

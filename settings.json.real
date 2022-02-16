@@ -1,0 +1,51 @@
+{
+  "statistics" : [
+    {
+      "value" : 55,
+      "description" : "Number of Customers"
+    },
+    {
+      "value" : 1620,
+      "description" : "Number of Mini Pies Delivered"
+    },
+    {
+      "value" : 3,
+      "description" : "Number of Volunteers"
+    },
+    {
+      "value" : 350,
+      "description" : "Number of Traditional Pies Delivered"
+    }
+  ],
+  "productCategories" : [
+    {
+      "id" : "desert-pies",
+      "active" : true,
+      "categoryName" : "Desert Pies",
+      "products" : [
+        {
+          "id" : "key-lime",
+          "productName" : "Key Lime ($15/dozen)",
+          "active" : true
+        }
+      ]
+    },
+    {
+      "id" : "meat-pies",
+      "active" : true,
+      "categoryName" : "Meat Pies",
+      "products" : [
+        {
+          "id" : "meat-pie-half-doz-full",
+          "productName" : "Half-dozen Full Size($25)",
+          "active" : true
+        },
+        {
+          "id" : "meat-pie-doz-mid",
+          "productName" : "Dozen Mid Size($25)",
+          "active" : true
+        }
+      ]
+    }
+  ]
+}

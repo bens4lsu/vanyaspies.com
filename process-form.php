@@ -102,11 +102,13 @@ $captchaResult = json_decode($response, true); // true decodes it to an array in
 
 
 // handle the response
-if($captchaResult['success'] == 1 && $captchaResult['score'] > 0.6) {
-	processResponse();
-} else {
-	print "Error:  this system suspects that the form was completed by a bot.";
+// if($captchaResult['success'] == 1 && $captchaResult['score'] > 0.6) {
+// 	processResponse();
+// } else {
+// 	print "Error:  this system suspects that the form was completed by a bot.";
+// 
+// }
 
-}
+processResponse();
 
 ?>
