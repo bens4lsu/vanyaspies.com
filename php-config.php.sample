@@ -1,0 +1,9 @@
+<?php
+
+const EMAILHOST = 'tls://smtp.office365.com:587';
+const EMAILUSER = 'vanya@vanyaspies.com';
+const EMAILPASSWORD = 'put real password here';
+const EMAILTO = ['vanya@vanyaspies.com'];      // can have multiple, comma seperated values here
+const EMAILSUBJECT = 'order from vanyaspies.com';
+const URLORDERSUCCESS = 'https://vanyaspies.com/thank-you.html';
+const URLORDERERROR = 'https://vanyaspies.com/order-error.html';
