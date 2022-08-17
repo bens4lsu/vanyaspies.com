@@ -1,14 +1,7 @@
 <?php
 
 require_once('PHPMailer-master/PHPMailerAutoload.php');
-
-const EMAILHOST = 'tls://mail.concordbusinessservicesllc.com:587';
-const EMAILUSER = 'no-reply@vanyaspies.com';
-const EMAILPASSWORD = 'Ht2s34VM8fHt2s34VM8f';
-const EMAILTO = ['vanya@vanyaspies.com'];      // can have multiple, comma seperated values here
-const EMAILSUBJECT = 'order from vanyaspies.com';
-const URLORDERSUCCESS = 'https://vanyaspies.com/thank-you.html';
-const URLORDERERROR = 'https://vanyaspies.com/order-error.html';
+require_once('php-config.php');
 
 function sendAnEmail($to, $subject, $message){
     // send mail
@@ -88,27 +81,26 @@ function processResponse() {
     }
 }
 
-$verify_url = 'https://www.google.com/recaptcha/api/siteverify';
-$args = array('secret' => '6Lc46MYUAAAAAHWDS37_Z3EnXMeauT9tE_KypWQV',
-              'response' => $_POST['recaptcha-token'],
-              'remoteip' => $_SERVER['REMOTE_ADDR']);
-$request_url = $verify_url.'?'.http_build_query($args);
+//$verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+//$args = array('secret' => '6Lc46MYUAAAAAHWDS37_Z3EnXMeauT9tE_KypWQV',
+//              'response' => $_POST['recaptcha-token'],
+//              'remoteip' => $_SERVER['REMOTE_ADDR']);
+//$request_url = $verify_url.'?'.http_build_query($args);
  
 // a JSON object is returned
-$response = file_get_contents($request_url);
+//$response = file_get_contents($request_url);
  
 // decode the information
-$captchaResult = json_decode($response, true); // true decodes it to an array instead of a PHP object
+//$captchaResult = json_decode($response, true); // true decodes it to an array instead of a PHP object
 
 
 // handle the response
-// if($captchaResult['success'] == 1 && $captchaResult['score'] > 0.6) {
-// 	processResponse();
-// } else {
-// 	print "Error:  this system suspects that the form was completed by a bot.";
-// 
-// }
+$math = isset($_POST['math']) ? $_POST['math'] : "";
+if($math == 6) {
+ 	processResponse();
+} else { 	
+    print "Error:  this system suspects that the form was completed by a bot.";
+}
 
-processResponse();
 
 ?>
